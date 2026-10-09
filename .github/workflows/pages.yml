@@ -1,0 +1,58 @@
+name: Publish GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect publishing source
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api "repos/$GITHUB_REPOSITORY/pages" --jq '{build_type, source, status, html_url}'
+      - name: Check game rules
+        run: |
+          node --check engine.js
+          node --check app.js
+          node --test tests/engine.test.js
+      - name: Stage the public site
+        run: |
+          mkdir -p _site
+          cp index.html manifesto.html app.js engine.js style.css favicon.svg .nojekyll _site/
+      - name: Upload the Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Publish the site
+        id: deployment
+        uses: actions/deploy-pages@v5

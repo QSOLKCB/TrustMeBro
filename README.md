@@ -11,6 +11,6 @@ You work at the **Department of Unsubstantiated Confidence**. Inspect claims, co
 - **The Manifesto of the Unimpressed**: eight scorched articles on determinism, truth, provenance, falsifiability, and institutional bullshit.
 - Responsive, keyboard accessible, and dependency-free. No accounts, analytics, external assets, or game network requests.
 
-Static HTML/CSS/JavaScript; no build step. GitHub Pages can serve `main` → `/ (root)` after this change is merged. `.nojekyll` keeps it a plain static site. For local use, see [GETTING_STARTED.md](GETTING_STARTED.md).
+Static HTML/CSS/JavaScript; no build step. Set **Settings → Pages → Source** to **GitHub Actions**. The **Publish GitHub Pages** workflow publishes `main`; pull requests only validate the site. `.nojekyll` keeps it a plain static site. For local use and deployment troubleshooting, see [GETTING_STARTED.md](GETTING_STARTED.md).
 
 All defendants and proceedings are fictional satire. Nothing is sent to anyone. The existing [Apache-2.0 licence](LICENSE) applies.

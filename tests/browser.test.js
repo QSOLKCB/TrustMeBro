@@ -80,6 +80,7 @@ async function run() {
         await page.locator(`[data-command="${match[1].toLowerCase()}"]`).click();
       }
       assert.equal(await page.locator('#sanctions-value').innerText(),'6/6');
+      assert.equal(await page.locator('#docket-open').innerText(),'0 OPEN CASES');
       assert.equal(await page.locator('#contempt-value').innerText(),'06');
       assert.equal(await page.locator('.log-line.stamp').count(),6);
       assert.ok((await page.locator('#outcome').innerText()).includes('Goan get farked.'));

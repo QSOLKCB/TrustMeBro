@@ -47,6 +47,7 @@
     const total = document.createElement('span'); total.textContent = '/6'; $('sanctions-value').appendChild(total);
     const phases = {briefing:'NOT CLOCKED IN', active:'IN PROCEEDINGS', between:'CASE CLOSED', won:'SHIFT COMPLETE', lost:'PATIENCE EXTINCT'};
     $('phase-badge').textContent = phases[s.phase];
+    $('docket-open').textContent = `${CASES.length - s.sanctions} OPEN CASES`;
     $('terminal-path').textContent = s.phase === 'briefing' ? '~/department/onboarding' : `~/department/${game.defendant.slug}`;
     $('case-code').textContent = `TMB-00${s.phase === 'briefing' ? 0 : s.caseIndex + 1}`;
     $('notice').textContent = NOTICES[(s.forms + s.caseIndex) % NOTICES.length];

@@ -25,7 +25,6 @@ jobs:
       - name: Test desktop and mobile browser gameplay
         env:
           TMB_CHROME_CHANNEL: chrome
-          TMB_CAPTURE_VISUALS: '1'
         run: NODE_PATH="$RUNNER_TEMP/trustmebro-qa/node_modules" node tests/browser.test.js
       - name: Retain browser evidence
         if: always()

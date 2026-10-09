@@ -25,7 +25,11 @@ npm install --prefix /tmp/trustmebro-qa --no-package-lock --no-audit --no-fund p
 NODE_PATH=/tmp/trustmebro-qa/node_modules node tests/browser.test.js
 ```
 
-GitHub Pages: use the repository root on `main`. The game and manifesto use relative links, so they work under `/TrustMeBro/` as well as a local server root.
+GitHub Pages: in **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. The `Publish GitHub Pages` workflow stages the site, uploads its Pages artifact, and deploys every push to `main`. It also has a manual **Run workflow** control. Pull requests validate and package the site without publishing it.
+
+The public artifact includes only `index.html`, `manifesto.html`, the two JavaScript files, `style.css`, `favicon.svg`, and `.nojekyll`. The game and manifesto use relative links, so they work under `/TrustMeBro/` as well as a local server root.
+
+If Pages returns 404, check that the publishing source is **GitHub Actions** and that **Publish GitHub Pages** has completed its `deploy` job successfully. A green **Game checks** run verifies gameplay; it does not publish the site. After changing the publishing source, run the publishing workflow again if its previous deployment failed.
 
 Implementation:
 

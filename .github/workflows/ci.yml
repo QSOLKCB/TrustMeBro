@@ -1,0 +1,36 @@
+name: Game checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript syntax
+        run: |
+          node --check engine.js
+          node --check app.js
+      - name: Test deterministic game rules
+        run: node --test tests/engine.test.js
+      - name: Install browser test tooling
+        run: npm install --prefix "$RUNNER_TEMP/trustmebro-qa" --no-package-lock --no-audit --no-fund playwright@1.62.1
+      - name: Test desktop and mobile browser gameplay
+        env:
+          TMB_CHROME_CHANNEL: chrome
+          TMB_CAPTURE_VISUALS: '1'
+        run: NODE_PATH="$RUNNER_TEMP/trustmebro-qa/node_modules" node tests/browser.test.js
+      - name: Retain browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-evidence
+          path: test-results/
+          if-no-files-found: ignore
